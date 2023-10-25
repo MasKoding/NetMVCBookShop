@@ -1,0 +1,158 @@
+﻿@model ListShoppingCartDetail
+
+@{
+    ViewData["Title"] = "Cart Detail Page";
+}
+
+
+<div class="my-2">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body d-flex flex-row align-items-center justify-content-between">
+                    <div class="colHeader" style="width:40%;">BookName</div>
+                    <div class="colHeader">Price</div>
+                    <div class="colHeader">Quantity</div>
+                    <div class="colHeader">Total Price</div>
+                    <div class="colHeader">Action</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <p>Gramedia Shop</p>
+                    <hr />
+
+                    @if (Model.shoppingCartDetails != null && Model.shoppingCartDetails.Count() > 0)
+                    {
+                        @foreach (var data in Model.shoppingCartDetails)
+                        {
+                            <div class="d-flex flex-row align-items-center justify-content-between mt-4">
+
+                                <div class="col1 d-flex flex-row" style="width:40%;">
+                                    <img class="image" src="@data.Image" width="80px" height="80px" />
+                                    <span class="bookName">@data.BookName</span>
+                                </div>
+                                <div class="col3"><span class="price">Rp.@data.Price</span></div>
+                                <div class="col3 d-flex flex-row justify-content-around" style="width:10%;">
+                                    <a href="/Cart/RemoveItem?bookId=@data.BookId" class="btnMinus">
+                                        <i class="bi bi-dash-square-fill"></i>
+                                    </a>
+                                    <span class="qty">@data.Quantity</span>
+                                    <a href="/Cart/AddItem?bookId=@data.BookId&redirect=1" class="btnPlus">
+                                        <i class="bi bi-plus-square-fill"></i>
+                                    </a>
+                                </div>
+                                <div class="col3"><span class="total">Rp.@(data.Price*data.Quantity)</span></div>
+                                <div class="col5">
+                                    <button class="btn btn-danger btnHapus" type="button">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        }
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <h5>Total (INR):</h5>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    @(Model.shoppingCartDetails.Select(item=>item.Price*item.Quantity).Sum())
+                    <a href="/Cart/Checkout" class="btn btn-primary">Checkout</a>
+
+                </div>
+                      
+                      
+
+                    }
+                    else
+                    {
+
+                        <div>Empty Cart</div>
+                    }
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>    
+
+</div>
+
+@section Scripts{
+
+<script type="text/javascript">
+
+    const rows = document.querySelectorAll(".col3")
+   
+
+    rows.forEach(row => {
+
+        const quantityElement = row.querySelector(".qty")
+        const incrementButton = row.querySelector(".btnPlus")
+        const decrementButton = row.querySelector(".btnMinus")
+        var price = row.querySelector(".price")
+        var total = row.querySelector(".total")
+        var btnHapus = row.querySelector(".btnHapus")
+        var bookName = row.querySelector(".bookName")
+        var image = row.querySelector(".image")
+
+        let quantity = parseInt(quantityElement.textContent)
+
+        if (price) {
+            console.log(price)
+        }
+
+
+                incrementButton.addEventListener("click", () => {
+                    quantity++
+
+                    updateQuantity(quantity)
+                })
+
+                decrementButton.addEventListener("click", () => {
+                    if (quantity > 0) {
+                        quantity--
+                        updateQuantity(quantity)
+                    }
+                })
+            
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function updateQuantity(quantity) {
+            
+            quantityElement.textContent = quantity
+           
+
+
+        }
+    });
+
+
+
+
+  
+  
+</script>
+
+}
